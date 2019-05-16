@@ -17,7 +17,7 @@ class CreateNotasTable extends Migration
             $table->bigIncrements('id');
             $table->integer('filme_id');
             $table->integer('user_id');
-            $table->integer('valor');
+            $table->decimal('valor', 2, 1);
             $table->timestamps();
         });
     }

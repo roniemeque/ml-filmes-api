@@ -42,10 +42,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Nota');
     }
 
-    public function sumarios()
+    public function categorias()
     {
         return $this->belongsToMany('App\Categoria')
-            ->using('App\UserSumario')
             ->withPivot([
                 'notas_total',
                 'notas_quantidade',

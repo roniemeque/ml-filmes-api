@@ -18,10 +18,9 @@ class Categoria extends Model
         return $this->belongsToMany('App\Filme');
     }
 
-    public function sumarios()
+    public function users()
     {
         return $this->belongsToMany('App\User')
-            ->using('App\UserSumario')
             ->withPivot([
                 'notas_total',
                 'notas_quantidade',
