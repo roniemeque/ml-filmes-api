@@ -16,7 +16,6 @@ class CreateFilmesTable extends Migration
         Schema::create('filmes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('titulo_original')->nullable();
-            $table->string('categorias_string')->nullable();
 
             //vamos pegar o titulo pt e a thumb do tmdb
             $table->string('titulo_pt')->nullable();
