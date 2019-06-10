@@ -41,6 +41,6 @@ class ExportaUsers extends Command
      */
     public function handle()
     {
-        Excel::store(new UserGostosExport(User::take(1000)->get()), 'public/exports/users.csv');
+        Excel::store(new UserGostosExport(User::all()), 'public/exports/users.csv');
     }
 }
