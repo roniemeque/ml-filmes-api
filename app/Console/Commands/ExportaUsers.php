@@ -41,6 +41,8 @@ class ExportaUsers extends Command
      */
     public function handle()
     {
+        $this->info('Exportando');
         Excel::store(new UserGostosExport(User::all()), 'public/exports/users.csv');
+        $this->info('Exportação completa.');
     }
 }

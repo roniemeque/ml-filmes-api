@@ -26,7 +26,7 @@ class UserController extends Controller
     public function pegaSugestoes(User $user)
     {
         if (!filled($user->grupo)) {
-            return response()->json(['sugestoes' => []], 200);
+            return response()->json(['filmes' => []], 200);
         }
 
         $filmesDoUsuario = $user->notas->map(function ($nota) {
@@ -36,7 +36,7 @@ class UserController extends Controller
         $filmes = collect([]);
 
         //pegar vizinhos aleatorios
-        $vizinhos = User::inRandomOrder()->take(10)->where('grupo', $user->grupo)->get();
+        $vizinhos = User::inRandomOrder()->take(5)->where('grupo', $user->grupo)->get();
 
         foreach ($vizinhos as $vizinho) {
             $notas = $vizinho->notas()->orderBy('valor', 'desc')->take(5)->get();
