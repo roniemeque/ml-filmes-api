@@ -13,4 +13,13 @@ class UserController extends Controller
 
         return response()->json(['user' => $user], 200);
     }
+
+    public function atualizaMedias(User $user)
+    {
+        $user->atualizaMedias();
+
+        return response()->json([
+            'medias' => $user->categorias
+        ], 200);
+    }
 }

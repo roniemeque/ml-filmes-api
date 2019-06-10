@@ -52,4 +52,37 @@ class User extends Authenticatable
                 'updated_at'
             ]);
     }
+
+    public function atualizaMedias()
+    {
+        foreach ($this->categorias as $categoria) {
+            $this->categorias()->updateExistingPivot($categoria->id, [
+                'notas_total' => 0,
+                'notas_quantidade' => 0
+            ]);
+        }
+
+        foreach ($this->notas as $nota) {
+            if (filled($nota->filme) && filled($nota->filme->categorias)) {
+                foreach ($nota->filme->categorias as $categoria) {
+                    $userCategoria = $this->categorias()->find($categoria->id);
+                    if (filled($userCategoria)) {
+                        $userCategoriaPivot = $userCategoria->pivot;
+                        $totalAtual = $userCategoriaPivot->notas_total;
+                        $contagemAtual = $userCategoriaPivot->notas_quantidade;
+                    } else {
+                        $totalAtual = 0;
+                        $contagemAtual = 0;
+                    }
+
+                    $this->categorias()->syncWithoutDetaching([
+                        $categoria->id => [
+                            'notas_total' => $totalAtual + ceil($nota->valor),
+                            'notas_quantidade' => $contagemAtual + 1
+                        ]
+                    ]);
+                }
+            }
+        }
+    }
 }

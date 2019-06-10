@@ -14,4 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::post('users', 'UserController@cria');
+Route::get('users/{user}/atualiza-medias', 'UserController@atualizaMedias');
+
 Route::post('avaliar', 'NotaController@avaliar');
+Route::get('rodar-modelo', 'NotaController@rodarModelo');
