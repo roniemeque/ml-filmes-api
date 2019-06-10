@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Nota;
 use App\Filme;
+use App\Exports\UserGostosExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
@@ -27,23 +29,19 @@ class NotaController extends Controller
         ], 200);
     }
 
-    public function rodarModelo()
+    public function rodarModelo(Request $request)
     {
         //exportar csv
+        Excel::store(new UserGostosExport(User::take($request->quantidade_users)->orderBy('id', 'desc')->get()), 'public/exports/temp-users.csv');
 
         //rodar python em cima do modelo
-
-        //retornar sucesso
-
-
-        $process = new Process('python3 /Users/ronieeduardomeque/Code/tcc/filmes/python/clustering.py');
+        $process = new Process('python3 /Users/ronieeduardomeque/Code/tcc/modelo/cluster.py');
         $process->run();
 
-        // executes after the command finishes
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
 
-        return response()->json($process->getOutput(), 200);
+        return response()->json('ok', 200);
     }
 }

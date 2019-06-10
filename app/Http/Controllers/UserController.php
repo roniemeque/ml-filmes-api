@@ -22,4 +22,37 @@ class UserController extends Controller
             'medias' => $user->categorias
         ], 200);
     }
+
+    public function pegaSugestoes(User $user)
+    {
+        if (!filled($user->grupo)) {
+            return response()->json(['sugestoes' => []], 200);
+        }
+
+        $filmesDoUsuario = $user->notas->map(function ($nota) {
+            return $nota->filme;
+        });
+
+        $filmes = collect([]);
+
+        //pegar vizinhos aleatorios
+        $vizinhos = User::inRandomOrder()->take(10)->where('grupo', $user->grupo)->get();
+
+        foreach ($vizinhos as $vizinho) {
+            $notas = $vizinho->notas()->orderBy('valor', 'desc')->take(5)->get();
+            foreach ($notas as $nota) {
+                if (!$filmes->contains(function ($filme) use ($nota) {
+                    return $filme->id === $nota->filme_id;
+                })) {
+                    if (!$filmesDoUsuario->contains(function ($filme) use ($nota) {
+                        return $filme->id === $nota->filme_id;
+                    })) {
+                        $filmes->push($nota->filme);
+                    }
+                }
+            }
+        }
+
+        return response()->json(['filmes' => $filmes], 200);
+    }
 }
