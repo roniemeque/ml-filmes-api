@@ -13,6 +13,8 @@ class Filme extends Model
      */
     protected $fillable = ['id', 'titulo_original', 'categorias_string', 'titulo_pt', 'imdb_id', 'tmdb_id', 'tmdb_info', 'tmdb_info_datetime', 'ano'];
 
+    public $timestamps = false;
+
     public function notas()
     {
         return $this->hasMany('App\Nota');
